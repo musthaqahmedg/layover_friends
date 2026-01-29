@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'screens/setup_screen.dart';
 
 void main() {
   runApp(const LayoverFriendsApp());
