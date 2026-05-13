@@ -51,34 +51,27 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: Container(
+        color: Colors.grey[50],
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Context
             Text(
               'You’re at ${widget.airportCode} · ${widget.layoverHours}h layover',
-              style: const TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey, fontSize: 13),
             ),
-            const SizedBox(height: 6),
-
-            // Presence count
+            const SizedBox(height: 8),
             Text(
               '${people.length} people open to ${widget.intent.toLowerCase()}',
-              style: const TextStyle(fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-
-            const SizedBox(height: 10),
-
-            // Intro text
+            const SizedBox(height: 6),
             const Text(
-              'These people are open to a friendly career chat. '
-              'No pressure — say hi only if it feels right.',
-              style: TextStyle(color: Colors.grey),
+              'These people are open to a friendly career chat.',
+              style: TextStyle(color: Colors.grey, fontSize: 13),
             ),
-
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
@@ -91,10 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-
             const SizedBox(height: 10),
-
-            // People list
             Expanded(
               child: ListView.builder(
                 itemCount: people.length,
@@ -104,33 +94,68 @@ class _HomeScreenState extends State<HomeScreen> {
                   final alreadySent = sentRequests.contains(name);
 
                   return Card(
-                    margin: const EdgeInsets.only(bottom: 12),
-                    child: ListTile(
-                      leading: const CircleAvatar(child: Icon(Icons.person)),
-                      title: Text(
-                        '$name — ${person['role']}',
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      subtitle: Text(person['message']!),
-                      trailing: alreadySent
-                          ? const Text(
-                              'Request sent',
-                              style: TextStyle(color: Colors.grey),
-                            )
-                          : TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  sentRequests.add(name);
-                                });
-
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Request sent to $name'),
+                    elevation: 2,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    margin: const EdgeInsets.only(bottom: 14),
+                    child: Padding(
+                      padding: const EdgeInsets.all(14),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const CircleAvatar(
+                                radius: 20,
+                                child: Icon(Icons.person),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: Text(
+                                  '$name — ${person['role']}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
                                   ),
-                                );
-                              },
-                              child: const Text('Say Hi 👋'),
-                            ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            person['message']!,
+                            style: const TextStyle(fontSize: 13),
+                          ),
+                          const SizedBox(height: 10),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: alreadySent
+                                ? const Text(
+                                    'Request sent',
+                                    style: TextStyle(color: Colors.grey),
+                                  )
+                                : TextButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        sentRequests.add(name);
+                                      });
+
+                                      ScaffoldMessenger.of(
+                                        context,
+                                      ).showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                            'Request sent to $name',
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: const Text('Say Hi 👋'),
+                                  ),
+                          ),
+                        ],
+                      ),
                     ),
                   );
                 },

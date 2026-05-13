@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
+import '../data/airports.dart';
 
 class SetupScreen extends StatefulWidget {
   const SetupScreen({super.key});
@@ -9,58 +10,37 @@ class SetupScreen extends StatefulWidget {
 }
 
 class _SetupScreenState extends State<SetupScreen> {
+  List<Airport> _airports = [];
   final TextEditingController _layoverController = TextEditingController();
 
-  String? errorMessage;
-  bool isLoading = false;
-
-  // 🌍 Selected airport
   String? selectedAirport;
+  String? errorMessage;
 
-  // 🌍 Global-feeling airport list (sample for now)
-  final List<String> airports = [
-    'DXB – Dubai',
-    'MCT – Muscat',
-    'DOH – Doha',
-    'DEL – Delhi',
-    'BOM – Mumbai',
-    'LHR – London Heathrow',
-    'JFK – New York',
-    'SIN – Singapore',
-    'CDG – Paris',
-    'FRA – Frankfurt',
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _loadAirports();
+  }
+
+  Future<void> _loadAirports() async {
+    final loaded = await loadAirports();
+    setState(() {
+      _airports = loaded;
+    });
+  }
 
   Future<void> _submit() async {
     final hours = int.tryParse(_layoverController.text.trim());
 
-    setState(() {
-      errorMessage = null;
-    });
-
     if (selectedAirport == null) {
-      setState(() {
-        errorMessage = '❌ Please select an airport';
-      });
+      setState(() => errorMessage = "Please select an airport");
       return;
     }
 
     if (hours == null || hours <= 0) {
-      setState(() {
-        errorMessage = '❌ Layover hours must be greater than 0';
-      });
+      setState(() => errorMessage = "Enter valid layover hours");
       return;
     }
-
-    setState(() {
-      isLoading = true;
-    });
-
-    await Future.delayed(const Duration(seconds: 2));
-
-    setState(() {
-      isLoading = false;
-    });
 
     Navigator.push(
       context,
@@ -68,121 +48,107 @@ class _SetupScreenState extends State<SetupScreen> {
         builder: (_) => HomeScreen(
           airportCode: selectedAirport!,
           layoverHours: hours,
-          intent: 'Career / Opportunity',
+          intent: "Career / Opportunity",
         ),
       ),
     );
   }
 
-  @override
-  void dispose() {
-    _layoverController.dispose();
-    super.dispose();
+  String _flagFromCountryCode(String countryCode) {
+    return countryCode.toUpperCase().replaceAllMapped(
+      RegExp(r'[A-Z]'),
+      (match) =>
+          String.fromCharCode(match.group(0)!.codeUnitAt(0) + 127397),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    if (_airports.isEmpty) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Layover Friends ✈️'),
+        title: const Text("Layover Friends ✈️"),
         centerTitle: true,
       ),
       body: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const Text(
-              'Find your opportunity during a layover',
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
-            ),
-
-            const SizedBox(height: 10),
-
-            const Text(
-              'Search your airport and see who is open to connect',
-              textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.grey),
-            ),
-
-            const SizedBox(height: 30),
-
-            // 🌍 Airport Autocomplete
-            Autocomplete<String>(
+            Autocomplete<Airport>(
               optionsBuilder: (TextEditingValue textEditingValue) {
-                if (textEditingValue.text.isEmpty) {
-                  return const Iterable<String>.empty();
+                final query = textEditingValue.text.toLowerCase();
+
+                if (query.isEmpty) {
+                  return _airports;
                 }
-                return airports.where(
-                  (airport) => airport.toLowerCase().contains(
-                    textEditingValue.text.toLowerCase(),
-                  ),
-                );
-              },
-              onSelected: (String selection) {
-                setState(() {
-                  selectedAirport = selection;
+
+                return _airports.where((airport) {
+                  return airport.code.toLowerCase().contains(query) ||
+                      airport.city.toLowerCase().contains(query) ||
+                      airport.country.toLowerCase().contains(query) ||
+                      airport.countryCode.toLowerCase().contains(query);
                 });
               },
-              fieldViewBuilder: (context, controller, focusNode, _) {
+              displayStringForOption: (Airport option) =>
+                  "${option.code} - ${option.city}",
+              onSelected: (Airport selection) {
+                selectedAirport = selection.code;
+              },
+              fieldViewBuilder:
+                  (context, controller, focusNode, _) {
                 return TextField(
                   controller: controller,
                   focusNode: focusNode,
                   decoration: const InputDecoration(
-                    prefixIcon: Icon(Icons.flight_takeoff),
-                    labelText: 'Search Airport',
-                    hintText: 'Type DXB, MCT, LHR...',
+                    labelText: "Search Airport",
+                    hintText: "Type city, country or code...",
                     border: OutlineInputBorder(),
                   ),
                 );
               },
+              optionsViewBuilder:
+                  (context, onSelected, Iterable<Airport> options) {
+                return Material(
+                  elevation: 4,
+                  child: ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: options.length,
+                    itemBuilder: (context, index) {
+                      final airport = options.elementAt(index);
+                      return ListTile(
+                        leading: Text(
+                          _flagFromCountryCode(airport.countryCode),
+                          style: const TextStyle(fontSize: 20),
+                        ),
+                        title: Text(
+                          "${airport.code} - ${airport.city}, ${airport.country}",
+                        ),
+                        onTap: () => onSelected(airport),
+                      );
+                    },
+                  ),
+                );
+              },
             ),
-
             const SizedBox(height: 20),
-
             TextField(
               controller: _layoverController,
               keyboardType: TextInputType.number,
-              enabled: !isLoading,
               decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.timer),
-                labelText: 'Layover Hours',
-                hintText: 'e.g. 3',
+                labelText: "Layover Hours",
                 border: OutlineInputBorder(),
               ),
             ),
-
             const SizedBox(height: 20),
-
             if (errorMessage != null)
-              Text(
-                errorMessage!,
-                textAlign: TextAlign.center,
-                style: const TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-
+              Text(errorMessage!, style: const TextStyle(color: Colors.red)),
             const SizedBox(height: 20),
-
-            ElevatedButton(
-              onPressed: isLoading ? null : _submit,
-              style: ElevatedButton.styleFrom(
-                padding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-              child: isLoading
-                  ? const SizedBox(
-                      height: 22,
-                      width: 22,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const Text('Continue', style: TextStyle(fontSize: 16)),
-            ),
+            ElevatedButton(onPressed: _submit, child: const Text("Continue")),
           ],
         ),
       ),
