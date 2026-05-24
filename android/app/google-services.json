@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "148013833254",
+    "project_id": "layover-friends",
+    "storage_bucket": "layover-friends.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:148013833254:android:61fe2f548e77b3d0545ae7",
+        "android_client_info": {
+          "package_name": "com.example.layover_friends"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqsdWHMJIdrfDsQUSZAFVXoRu-4cyhZFs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
