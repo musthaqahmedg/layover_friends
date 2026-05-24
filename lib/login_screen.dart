@@ -7,7 +7,7 @@ class LoginScreen extends StatelessWidget {
   Future<void> signInWithGoogle(BuildContext context) async {
     try {
       final GoogleAuthProvider googleProvider = GoogleAuthProvider();
-      await FirebaseAuth.instance.signInWithRedirect(googleProvider);
+      await FirebaseAuth.instance.signInWithPopup(googleProvider);
     } catch (e) {
       ScaffoldMessenger.of(
         context,
