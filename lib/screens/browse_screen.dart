@@ -192,10 +192,13 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                 color: Colors.deepPurple,
                               ),
                               onPressed: () {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      'Connect with ${data['name']} — coming soon!',
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ChatScreen(
+                                      otherUserId: users[index].id,
+                                      otherUserName: data['name'] ?? 'Unknown',
+                                      otherUserPhoto: data['photoURL'],
                                     ),
                                   ),
                                 );
