@@ -68,7 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Profile'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color(0xFF00BFA5),
         foregroundColor: Colors.white,
       ),
       body: SingleChildScrollView(
@@ -159,7 +159,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 onPressed: _isLoading ? null : _saveProfile,
                 style: ElevatedButton.styleFrom(
                   minimumSize: const Size(double.infinity, 56),
-                  backgroundColor: Colors.deepPurple,
+                  backgroundColor: const Color(0xFF00BFA5),
                   foregroundColor: Colors.white,
                 ),
                 child: _isLoading

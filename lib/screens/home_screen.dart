@@ -25,7 +25,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: _screens[_currentIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
-        selectedItemColor: Colors.deepPurple,
+        selectedItemColor: const Color(0xFF00BFA5),
         onTap: (index) => setState(() => _currentIndex = index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
@@ -47,7 +47,7 @@ class _HomeTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Layover Friends ✈️'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color(0xFF00BFA5),
         foregroundColor: Colors.white,
         actions: [
           IconButton(

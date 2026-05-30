@@ -64,7 +64,7 @@ class _ChatScreenState extends State<ChatScreen> {
             Text(widget.otherUserName),
           ],
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color(0xFF00BFA5),
         foregroundColor: Colors.white,
       ),
       body: Column(
@@ -125,7 +125,7 @@ class _ChatScreenState extends State<ChatScreen> {
                         ),
                         decoration: BoxDecoration(
                           color: isMe
-                              ? Colors.deepPurple
+                              ? const Color(0xFF00BFA5)
                               : Colors.grey.shade200,
                           borderRadius: BorderRadius.circular(16),
                         ),
@@ -177,7 +177,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 const SizedBox(width: 8),
                 CircleAvatar(
-                  backgroundColor: Colors.deepPurple,
+                  backgroundColor: const Color(0xFF00BFA5),
                   child: IconButton(
                     icon: const Icon(Icons.send, color: Colors.white, size: 18),
                     onPressed: _sendMessage,

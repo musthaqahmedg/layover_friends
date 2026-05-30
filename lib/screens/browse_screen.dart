@@ -44,7 +44,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
         title: Text(
           _currentAirport.isEmpty ? 'Browse' : 'People at $_currentAirport ✈️',
         ),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: const Color(0xFF00BFA5),
         foregroundColor: Colors.white,
       ),
       body: _currentAirport.isEmpty
@@ -145,7 +145,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                   Text(
                                     data['jobTitle'] ?? '',
                                     style: const TextStyle(
-                                      color: Colors.deepPurple,
+                                      color: const Color(0xFF00BFA5),
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -189,7 +189,7 @@ class _BrowseScreenState extends State<BrowseScreen> {
                             IconButton(
                               icon: const Icon(
                                 Icons.connect_without_contact,
-                                color: Colors.deepPurple,
+                                color: const Color(0xFF00BFA5),
                               ),
                               onPressed: () {
                                 Navigator.push(
