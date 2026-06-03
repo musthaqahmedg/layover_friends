@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'profile_screen.dart';
 import 'browse_screen.dart';
+import 'offers_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,6 +17,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final List<Widget> _screens = [
     const _HomeTab(),
     const BrowseScreen(),
+    const OffersScreen(),
     const ProfileScreen(),
   ];
 
@@ -26,10 +28,14 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         selectedItemColor: const Color(0xFF00BFA5),
+        backgroundColor: const Color(0xFF1A1A1A),
+        unselectedItemColor: Colors.grey,
+        type: BottomNavigationBarType.fixed,
         onTap: (index) => setState(() => _currentIndex = index),
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.flight), label: 'Browse'),
+          BottomNavigationBarItem(icon: Icon(Icons.campaign), label: 'Offers'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
@@ -47,7 +53,7 @@ class _HomeTab extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Layover Friends ✈️'),
-        backgroundColor: const Color(0xFF00BFA5),
+        backgroundColor: const Color(0xFF1A1A1A),
         foregroundColor: Colors.white,
         actions: [
           IconButton(
