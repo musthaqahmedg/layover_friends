@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'profile_screen.dart';
 import 'browse_screen.dart';
 import 'offers_screen.dart';
+import 'flight_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,6 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const _HomeTab(),
     const BrowseScreen(),
     const OffersScreen(),
+    const FlightScreen(),
     const ProfileScreen(),
   ];
 
@@ -36,6 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
           BottomNavigationBarItem(icon: Icon(Icons.flight), label: 'Browse'),
           BottomNavigationBarItem(icon: Icon(Icons.campaign), label: 'Offers'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.flight_takeoff),
+            label: 'Flights',
+          ),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
       ),
