@@ -14,8 +14,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
   final _scrollController = ScrollController();
   final List<Map<String, String>> _messages = [];
   bool _isLoading = false;
-  final String _apiKey =
-      'AQ.Ab8RN6JQmojFY5HONFuz0vhxV-G9YLOlTj84AsYfflLaxJJztA';
+  final String _apiKey = '';
 
   final List<String> _suggestions = [
     'Do I need a visa from India to Dubai? 🇦🇪',
