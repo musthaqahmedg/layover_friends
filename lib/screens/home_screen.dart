@@ -4,6 +4,7 @@ import 'profile_screen.dart';
 import 'browse_screen.dart';
 import 'offers_screen.dart';
 import 'flight_screen.dart';
+import 'ai_assistant_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -69,6 +70,21 @@ class _HomeTab extends StatelessWidget {
             },
           ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AiAssistantScreen()),
+          );
+        },
+        backgroundColor: const Color(0xFF00BFA5),
+        foregroundColor: Colors.black,
+        icon: const Text('🤖', style: TextStyle(fontSize: 20)),
+        label: const Text(
+          'AI Assistant',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Center(
         child: Column(
