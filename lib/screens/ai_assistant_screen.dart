@@ -14,7 +14,8 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
   final _scrollController = ScrollController();
   final List<Map<String, String>> _messages = [];
   bool _isLoading = false;
-  final String _apiKey = '';
+  final String _apiKey =
+      'AQ.Ab8RN6InKF5GAkhI93HwLm8zF1NUHdaNu9seRcOlqD3zqUTdDA';
 
   final List<String> _suggestions = [
     'Do I need a visa from India to Dubai? 🇦🇪',
@@ -57,7 +58,7 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
     _scrollToBottom();
     try {
       final url =
-          'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-lite:generateContent?key=$_apiKey';
+          'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=$_apiKey';
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
