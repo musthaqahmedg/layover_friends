@@ -14,7 +14,6 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
   final _scrollController = ScrollController();
   final List<Map<String, String>> _messages = [];
   bool _isLoading = false;
-  final String _apiKey = '';
 
   final List<String> _suggestions = [
     'Do I need a visa from India to Dubai? 🇦🇪',
@@ -57,27 +56,14 @@ class _AiAssistantScreenState extends State<AiAssistantScreen> {
     _scrollToBottom();
     try {
       final url =
-          'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=$_apiKey';
+          'https://layover-friends.netlify.app/.netlify/functions/gemini';
       final response = await http.post(
         Uri.parse(url),
         headers: {'Content-Type': 'application/json'},
-        body: json.encode({
-          'contents': [
-            {
-              'parts': [
-                {
-                  'text':
-                      'You are a helpful travel assistant for the Layover Friends app. Help travelers with visa requirements, airport tips, layover activities, currency advice, and travel hacks. Keep responses concise and friendly. User question: $text',
-                },
-              ],
-            },
-          ],
-        }),
+        body: json.encode({'message': text}),
       );
       final data = json.decode(response.body);
-      final reply = data['candidates'] != null
-          ? data['candidates'][0]['content']['parts'][0]['text']
-          : data.toString();
+      final reply = data['reply'] ?? 'Sorry, I could not process that.';
       setState(() {
         _messages.add({'role': 'assistant', 'text': reply});
         _isLoading = false;
