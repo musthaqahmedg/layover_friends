@@ -58,7 +58,7 @@ exports.handler = async function(event, context) {
           resolve({
             statusCode: 200,
             headers: { 'Access-Control-Allow-Origin': '*' },
-            body: JSON.stringify({ reply: 'Error parsing response: ' + data })
+            body: JSON.stringify({ reply: 'Debug: ' + data })
           });
         }
       });
