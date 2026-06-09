@@ -17,24 +17,31 @@ exports.handler = async function(event, context) {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
-  const apiKey = process.env.GEMINI_API_KEY;
+  const apiKey = process.env.GROQ_API_KEY;
   const { message } = JSON.parse(event.body);
 
   const postData = JSON.stringify({
-    contents: [{
-      parts: [{
-        text: `You are a helpful travel assistant for the Layover Friends app. Help travelers with visa requirements, airport tips, layover activities, currency advice, and travel hacks. Keep responses concise and friendly. User question: ${message}`
-      }]
-    }]
+    model: 'llama3-8b-8192',
+    messages: [
+      {
+        role: 'system',
+        content: 'You are a helpful travel assistant for the Layover Friends app. Help travelers with visa requirements, airport tips, layover activities, currency advice, and travel hacks. Keep responses concise and friendly.'
+      },
+      {
+        role: 'user',
+        content: message
+      }
+    ]
   });
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     const options = {
-      hostname: 'generativelanguage.googleapis.com',
-      path: `/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`,
+      hostname: 'api.groq.com',
+      path: '/openai/v1/chat/completions',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
         'Content-Length': Buffer.byteLength(postData)
       }
     };
@@ -48,17 +55,14 @@ exports.handler = async function(event, context) {
           const reply = parsed.choices?.[0]?.message?.content || 'Debug: ' + JSON.stringify(parsed);
           resolve({
             statusCode: 200,
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Content-Type': 'application/json'
-            },
+            headers: { 'Access-Control-Allow-Origin': '*', 'Content-Type': 'application/json' },
             body: JSON.stringify({ reply })
           });
         } catch (e) {
           resolve({
             statusCode: 200,
             headers: { 'Access-Control-Allow-Origin': '*' },
-            body: JSON.stringify({ reply: 'Debug: ' + data })
+            body: JSON.stringify({ reply: 'Parse error: ' + e.message + ' Raw: ' + data.substring(0, 200) })
           });
         }
       });
