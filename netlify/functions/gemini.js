@@ -45,7 +45,7 @@ exports.handler = async function(event, context) {
       res.on('end', () => {
         try {
           const parsed = JSON.parse(data);
-          const reply = parsed.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not process that.';
+          const reply = parsed.choices?.[0]?.message?.content || 'Debug: ' + JSON.stringify(parsed);
           resolve({
             statusCode: 200,
             headers: {
