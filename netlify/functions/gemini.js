@@ -21,7 +21,7 @@ exports.handler = async function(event, context) {
   const { message } = JSON.parse(event.body);
 
   const postData = JSON.stringify({
-    model: 'llama-3.1-8b-instant',
+    model: 'openai/gpt-oss-20b',
     messages: [
       {
         role: 'system',
