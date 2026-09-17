@@ -34,7 +34,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     setState(() => _isLoading = true);
 
     try {
-      final user = FirebaseAuth.instance.currentUser!;
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) {
+        throw Exception('You must be signed in to save your profile.');
+      }
       await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
         'name': user.displayName,
         'email': user.email,
