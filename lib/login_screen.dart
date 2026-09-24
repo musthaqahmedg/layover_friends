@@ -183,10 +183,10 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                   const SizedBox(height: 48),
                   ElevatedButton.icon(
-                    onPressed: () => signInWithGoogle(context),
-                    icon: const Icon(Icons.login),
+                    onPressed: () => signInWithEmail(context),
+                    icon: const Icon(Icons.email_outlined),
                     label: const Text(
-                      'Continue with Google',
+                      'Continue with Email',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -203,9 +203,9 @@ class _LoginScreenState extends State<LoginScreen>
                   ),
                   const SizedBox(height: 16),
                   OutlinedButton.icon(
-                    onPressed: () => signInWithEmail(context),
-                    icon: const Icon(Icons.email_outlined),
-                    label: const Text('Continue with Email'),
+                    onPressed: () => signInWithGoogle(context),
+                    icon: const Icon(Icons.login),
+                    label: const Text('Continue with Google'),
                     style: OutlinedButton.styleFrom(
                       minimumSize: const Size(double.infinity, 56),
                       foregroundColor: Colors.white,
