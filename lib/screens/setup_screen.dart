@@ -45,11 +45,7 @@ class _SetupScreenState extends State<SetupScreen> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => HomeScreen(
-          airportCode: selectedAirport!,
-          layoverHours: hours,
-          intent: "Career / Opportunity",
-        ),
+        builder: (_) => const HomeScreen(),
       ),
     );
   }

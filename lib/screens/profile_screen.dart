@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../auth_utils.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -11,6 +12,7 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _jobTitleController = TextEditingController();
   final _airportController = TextEditingController();
   final _layoverHoursController = TextEditingController();
@@ -29,6 +31,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   ];
 
   Future<void> _saveProfile() async {
+    if (isGuestUser()) {
+      showGuestDialog(context);
+      return;
+    }
+
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
@@ -38,8 +45,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
       if (user == null) {
         throw Exception('You must be signed in to save your profile.');
       }
+      final name = _nameController.text;
+      await user.updateDisplayName(name);
       await FirebaseFirestore.instance.collection('users').doc(user.uid).set({
-        'name': user.displayName,
+        'name': name,
         'email': user.email,
         'photoURL': user.photoURL,
         'jobTitle': _jobTitleController.text,
@@ -98,6 +107,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
               ),
               const SizedBox(height: 24),
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(
+                  labelText: 'Your Name',
+                  hintText: 'e.g. John Doe',
+                  border: OutlineInputBorder(),
+                  prefixIcon: Icon(Icons.person),
+                ),
+                validator: (v) => v!.isEmpty ? 'Required' : null,
+              ),
+              const SizedBox(height: 16),
               TextFormField(
                 controller: _jobTitleController,
                 decoration: const InputDecoration(

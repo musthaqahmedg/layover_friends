@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../auth_utils.dart';
 
 class ChatScreen extends StatefulWidget {
   final String otherUserId;
@@ -28,6 +29,11 @@ class _ChatScreenState extends State<ChatScreen> {
   }
 
   Future<void> _sendMessage() async {
+    if (isGuestUser()) {
+      showGuestDialog(context);
+      return;
+    }
+
     final text = _messageController.text.trim();
     if (text.isEmpty) return;
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../auth_utils.dart';
 
 class OffersScreen extends StatefulWidget {
   const OffersScreen({super.key});
@@ -24,6 +25,11 @@ class _OffersScreenState extends State<OffersScreen> {
   ];
 
   Future<void> _postOffer() async {
+    if (isGuestUser()) {
+      showGuestDialog(context);
+      return;
+    }
+
     if (_offerController.text.trim().isEmpty) return;
 
     setState(() => _isLoading = true);

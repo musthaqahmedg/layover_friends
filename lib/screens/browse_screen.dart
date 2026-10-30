@@ -2,6 +2,7 @@ import 'chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import '../auth_utils.dart';
 
 class BrowseScreen extends StatefulWidget {
   const BrowseScreen({super.key});
@@ -192,6 +193,10 @@ class _BrowseScreenState extends State<BrowseScreen> {
                                 color: const Color(0xFF00BFA5),
                               ),
                               onPressed: () {
+                                if (isGuestUser()) {
+                                  showGuestDialog(context);
+                                  return;
+                                }
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(

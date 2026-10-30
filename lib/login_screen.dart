@@ -52,6 +52,17 @@ class _LoginScreenState extends State<LoginScreen>
     }
   }
 
+  Future<void> signInAsGuest() async {
+    try {
+      await FirebaseAuth.instance.signInAnonymously();
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Error: $e')));
+      }
+    }
+  }
+
   Future<void> signInWithEmail(BuildContext context) async {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
@@ -212,6 +223,17 @@ class _LoginScreenState extends State<LoginScreen>
                       side: const BorderSide(color: Color(0xFF00BFA5)),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  TextButton(
+                    onPressed: signInAsGuest,
+                    child: const Text(
+                      'Continue as guest',
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Color(0xFF00BFA5),
                       ),
                     ),
                   ),
